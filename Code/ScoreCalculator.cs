@@ -30,7 +30,7 @@ namespace BowlingGame
 
             var score = GetFramePins();
 
-            if (IsStrike()) 
+            if (IsStrike(_firstRollOfCurrentFrame)) 
                 score += GetStrikeBonus();
             else if (IsSpare()) 
                 score += GetSpareBonus();
@@ -73,16 +73,6 @@ namespace BowlingGame
             return bonus;
         }
 
-        private bool IsStrike()
-        {
-            return AreAllKnockedDown(GetFirstRollPins());
-        }
-
-        private int GetFirstRollPins()
-        {
-            return _pins[_firstRollOfCurrentFrame];
-        }
-
         public void Roll(int pins)
         {
             if ((pins < 0) ||
@@ -90,10 +80,22 @@ namespace BowlingGame
                 throw new ArgumentOutOfRangeException();
 
             // TODO: I do not like next code here. I presume it can be refactored ... using a list instead of an array
-            _pins[_currentRoll++] = pins;
+            _pins[_currentRoll] = pins;
 
-            if (AreAllKnockedDown(pins) && IsNotInLastFrame(_currentRoll))
+            if (IsStrike(_currentRoll) && IsNotInLastFrame(_currentRoll))
                 _currentRoll++;
+
+            _currentRoll++;
+        }
+
+        private bool IsStrike(int roll)
+        {
+            return IsFirstRoll(roll) && AreAllKnockedDown(_pins[roll]);
+        }
+
+        private static bool IsFirstRoll(int roll)
+        {
+            return (roll % 2 == 0);
         }
 
         private static bool IsNotInLastFrame(int roll)

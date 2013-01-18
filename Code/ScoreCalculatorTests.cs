@@ -93,6 +93,29 @@ namespace BowlingGame
             Assert.Throws<ArgumentOutOfRangeException>(() => _scoreCalculator.Roll(pins));
         }
 
+        [Test]
+        public void GetScore_returns_correct_incomplete_game_score_of_14_when_rolled_2_pins_after_a_spare()
+        {
+            _scoreCalculator.Roll(0);
+            _scoreCalculator.Roll(10);
+            _scoreCalculator.Roll(2);
+
+            var score = _scoreCalculator.GetScore();
+
+            Assert.AreEqual(14, score);
+        }
+        [Test]
+        public void GetScore_returns_correct_incomplete_game_score_of_14_when_rolled_0_and_2_pins_after_a_strike()
+        {
+            _scoreCalculator.Roll(10); 
+            _scoreCalculator.Roll(0);
+            _scoreCalculator.Roll(2);
+
+            var score = _scoreCalculator.GetScore();
+
+            Assert.AreEqual(14, score);
+        }
+
         private void RollMany(int numberOfRolls, int numberOfKnockedDownPins)
         {
             for (var i = 0; i < numberOfRolls; i++)
