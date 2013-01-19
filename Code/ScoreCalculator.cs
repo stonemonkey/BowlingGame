@@ -67,7 +67,7 @@ namespace BowlingGame
         {
             var bonus = _pins[_firstRollOfCurrentFrame + 3];
 
-            if (bonus == 0)
+            if (bonus == 0) // beside on last frame the second roll of a strike frame is 0
                 bonus += _pins[_firstRollOfCurrentFrame + 4];
             
             return bonus;
@@ -79,11 +79,15 @@ namespace BowlingGame
                 (pins > MaxNumberOfPinsKnockedDownPerFrame))
                 throw new ArgumentOutOfRangeException();
 
-            // TODO: I do not like next code here. I presume it can be refactored ... using a list instead of an array
             _pins[_currentRoll] = pins;
 
+            UpdateCurrentRoll();
+        }
+
+        private void UpdateCurrentRoll()
+        {
             if (IsStrike(_currentRoll) && IsNotInLastFrame(_currentRoll))
-                _currentRoll++;
+                _currentRoll++; // skip second roll on a strike frame
 
             _currentRoll++;
         }
