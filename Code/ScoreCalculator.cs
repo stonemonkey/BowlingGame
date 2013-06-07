@@ -67,7 +67,7 @@ namespace BowlingGame
         {
             var bonus = _pins[_firstRollOfCurrentFrame + 3];
 
-            if (bonus == 0) // beside on last frame the second roll of a strike frame is 0
+            if (bonus == 0) // beside the last frame, the second roll of a strike frame is 0
                 bonus += _pins[_firstRollOfCurrentFrame + 4];
             
             return bonus;
